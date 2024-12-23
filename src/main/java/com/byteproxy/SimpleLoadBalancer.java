@@ -10,7 +10,7 @@ public class SimpleLoadBalancer {
     private final AtomicInteger currentIndex;
 
     public SimpleLoadBalancer() {
-        this.servers = new ArrayList<Server>();
+        this.servers = new ArrayList<>();
         this.currentIndex = new AtomicInteger(0);
         servers.addAll(List.of(new Server("Server-1", "localhost", 8081),
                 new Server("Server-2", "localhost", 8082),
