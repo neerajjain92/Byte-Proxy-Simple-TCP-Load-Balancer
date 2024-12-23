@@ -16,7 +16,7 @@ Each should return a unique response with server ID and timestamp
 3. Start the load balancer:
 ```
 mvn clean package
-java -jar target/byte-proxy-1.0-SNAPSHOT.jar
+java -jar target/Byte-Proxy-Simple-TCP-Load-Balancer-1.0-SNAPSHOT.jar
 ```
 
 4. Test load balancing:
