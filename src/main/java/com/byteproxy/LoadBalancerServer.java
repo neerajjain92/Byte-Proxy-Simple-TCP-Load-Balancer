@@ -32,7 +32,8 @@ public class LoadBalancerServer {
 
             while (true) {
                 SocketChannel clientSocket = serverSocketChannel.accept();
-                System.out.println("New connection accepted!");
+                System.out.println("New connection accepted from: " + clientSocket.getRemoteAddress()
+                        + " to local port: " + ((InetSocketAddress) clientSocket.getLocalAddress()).getPort());
                 executor.execute(() -> {
                     try {
                         handleRequest(clientSocket);
@@ -49,7 +50,7 @@ public class LoadBalancerServer {
 
     private void handleRequest(SocketChannel clientChannel) throws IOException {
         Server server = loadBalancer.getNextServer();
-
+        System.out.println("Handling Request......! ==> " + server.getName());
         // Set up the client SocketChannel
         // Get existing channel or create from socket
         clientChannel.configureBlocking(false);
