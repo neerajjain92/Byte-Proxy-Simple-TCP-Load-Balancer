@@ -1,6 +1,5 @@
 package com.byteproxy;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
