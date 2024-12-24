@@ -49,14 +49,36 @@ jobs:
     - name: Run Load Balancer
       run: java -jar target/Byte-Proxy-Simple-TCP-Load-Balancer-1.0-SNAPSHOT.jar &
 
-    - name: Test load balancing
+    - name: Test load balancing with dynamic verification
       run: |
-        sleep 5
-        curl http://localhost:9090
-        curl http://localhost:9090
-        curl http://localhost:9090
-        curl http://localhost:9090
-        curl http://localhost:9090
+        # Array to store curl responses
+        declare -a responses
+        expected_pattern=("server1", "server2", "server3)
+
+        # Collect 9 responses (3 complete round robin cycles)
+        for i in {1..9}; do
+          response = $(curl -s http://localhost:9090)
+          responses+=("$response")
+          echo "Request $i: $response"
+        done
+
+        # Verify round robin pattern
+        failed = false
+        for i in "${!responses[@]}"; do
+          expected_server="${expected_pattern[$((i % 3))]}"
+          if [[ "${responses[$i]}" != *"$expected_server"* ]]; then
+            echo "❌ Pattern mismatch at request $((i+1)). Expected $expected_server"
+            failed=true
+            break
+          fi
+        done
+
+        if [ "$failed" == true ]; then
+          echo "❌ Round-robin pattern verification failed"
+          exit 1
+        else
+          echo "✅ Round-robin pattern verified for ${#responses[@]} requests"
+        fi
 
     - name:  Stop backend servers
       run: docker-compose down
