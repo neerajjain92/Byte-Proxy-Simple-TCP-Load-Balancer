@@ -2,6 +2,7 @@
 
 1. Start backend servers:
 ```
+docker-compose build
 docker-compose up -d
 ```
 

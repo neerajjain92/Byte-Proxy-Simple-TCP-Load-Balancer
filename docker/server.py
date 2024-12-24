@@ -4,7 +4,6 @@ import time
 
 class SimpleServer(BaseHTTPRequestHandler):
     def do_GET(self):
-        print(f"Received request for path: {self.path}")
         if self.path == '/health':
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
